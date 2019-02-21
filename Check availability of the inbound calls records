@@ -1,0 +1,23 @@
+callids=( $(PGPASSWORD='***' psql -h *** -U *** -d gen_icon_cti -t -c "select g_call.callid from g_call, g_call_stat WHERE g_call.callid = g_call_stat.callid and (calldnis like '759____' or calldnis like '791____' or calldnis like '908____') and f_conn=1 and (created > now() - interval '2 hour') and calltype=2" | sed '$ d') )                                                                  
+today_path="/home/Recordings/`date +"%Y-%m-%d"`/"                                                                                             
+yesterday_path="/home/Recordings/`date -d "12 hours ago" '+%Y-%m-%d'`/"                                                                       
+for each in "${callids[@]}"                                                                                                                   
+do                                                                                                                                            
+~       search=`find $today_path -name *$each*`                                                                                               
+~       if [[ -z $search ]]; then                                                                                                             
+~               search=`find $yesterday_path -name *$each*`                                                                                   
+~                                                                                                                                             
+~       fi                                                                                                                                    
+~       if [[ -z $search ]]; then                                                                                                             
+~               echo "Rec $callid is not found"                                                                                               
+~               not_found=$((not_found+1))                                                                                                    
+~       else found=$((found+1))                                                                                                               
+~       fi                                                                                                                                    
+done                                                                                                                                          
+if [[ -z $found ]]; then                                                                                                                      
+~       found=0                                                                                                                               
+fi                                                                                                                                            
+if [[ -z $not_found ]]; then                                                                                                                  
+"/etc/crnot_found=0 768C                                                                                                    17,1          All
+fi
+printf "########\n`date` \n${#callids[@]} Recs was checked\n$found founded\n$not_found not founded\n########\n" >> /root/result_in_recs_check.txt
